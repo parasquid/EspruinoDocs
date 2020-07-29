@@ -139,7 +139,7 @@ DMP.prototype.getData = function() {
               accelz: signedInt(packet[36], packet[37])  };
   }
 
-  console.log("DMP Data NOT ready");
+  if (this.debug) console.log("DMP Data NOT ready");
   return undefined;
 }
 
