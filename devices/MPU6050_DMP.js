@@ -97,9 +97,10 @@ exports.create = function (_mpu6050, _fifoRate) {
  * the FIFO output at the desired rate.
  * Handling FIFO overflow cleanly is also a good idea.
 */
-function DMP(_mpu6050, _fifoRate) {
+function DMP(_mpu6050, _fifoRate, debug) {
   this.mpu = _mpu6050;
   this.fifoRate = _fifoRate;
+  this.debug = debug;
   this.initialize();
 }
 
@@ -114,7 +115,7 @@ DMP.prototype.getData = function() {
   if ((status & 0x10) || fifoCount == 1024) {
     // reset so we can continue cleanly
     this.resetFIFO();
-    console.log("FIFO overflow!");
+    if (this.debug) console.log("FIFO overflow!");
     return undefined;
   } else if (status & 0x02) { // otherwise, check for DMP data ready interrupt (this should happen frequently)
     // wait for correct available data length, should be a VERY short wait
