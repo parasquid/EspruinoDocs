@@ -54,6 +54,20 @@ I2Clib.prototype.readBits = function(reg, bitStart, length) {
   return b;
 };
 
+
+/* Read 6 bytes and return 3 signed integer values */
+I2Clib.prototype.readSXYZ = function(reg) {
+  this.i2c.writeTo(this.addr, reg);
+  var bytes = this.i2c.readFrom(this.addr, 6);
+  var x = (bytes[0] << 8) | bytes[1];
+  var y = (bytes[2] << 8) | bytes[3];
+  var z = (bytes[4] << 8) | bytes[5];
+  x = (x>32767) ? x - 65536 : x;
+  y = (y>32767) ? y - 65536 : y;
+  z = (z>32767) ? z - 65536 : z;
+  return [x, y ,z];
+};
+
 I2Clib.prototype.writeBytes = function(reg, data) {
   this.i2c.writeTo(this.addr, [reg].concat(data));
 };
