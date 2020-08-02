@@ -4,6 +4,10 @@ function I2Clib(i2c, addr) {
   this.addr = addr;
 }
 
+exports.connect = function (i2c, addr) {
+  return new I2Clib(i2c, addr);
+};
+
 I2Clib.prototype.readBytes = function(reg, length) {
   this.i2c.writeTo(this.addr, reg);
   return this.i2c.readFrom(this.addr, length);
